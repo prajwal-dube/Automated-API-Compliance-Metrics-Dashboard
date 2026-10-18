@@ -1,0 +1,20 @@
+[
+  {
+    "id": "orders",
+    "name": "Orders API",
+    "app": "examples/orders/app.cjs",
+    "source": "examples/orders/app.cjs",
+    "test": "examples/orders/test/app.test.js",
+    "openapi": "examples/orders/openapi.yaml",
+    "sonarProjectKey": "demo-orders"
+  },
+  {
+    "id": "users",
+    "name": "Users API",
+    "app": "examples/users/app.cjs",
+    "source": "examples/users/app.cjs",
+    "test": "examples/users/test/app.test.js",
+    "openapi": "examples/users/openapi.yaml",
+    "sonarProjectKey": "demo-users"
+  }
+]

@@ -1,0 +1,37 @@
+name: API quality gates
+on:
+  push:
+    branches: [main]
+    tags: ['v*.0.0']
+  pull_request:
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+      - run: npm ci
+      - run: npm --prefix frontend ci
+      - run: npm --prefix frontend run build
+      - name: Run gates and build major-release PDF
+        env:
+          RELEASE_TAG: ${{ startsWith(github.ref, 'refs/tags/v') && github.ref_name || '' }}
+        run: |
+          if [ -n "$RELEASE_TAG" ]; then
+            node runner/cli.cjs --release-tag "$RELEASE_TAG"
+          else
+            node runner/cli.cjs
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: qa-evidence
+          path: |
+            data/*.json
+            artifacts/*.pdf
+          if-no-files-found: warn

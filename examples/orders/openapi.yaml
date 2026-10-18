@@ -1,0 +1,62 @@
+openapi: 3.0.3
+info:
+  title: Demo Orders API
+  version: 1.0.0
+paths:
+  /health:
+    get:
+      x-test-case: { path: /health, expectedStatus: 200 }
+      responses:
+        '200':
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [status]
+                properties: { status: { type: string, enum: [ok] } }
+  /orders/{id}:
+    get:
+      x-test-case: { path: /orders/ord-1, expectedStatus: 200 }
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: Found order
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Order' }
+        '404':
+          description: Not found
+  /orders:
+    post:
+      x-test-case:
+        path: /orders
+        expectedStatus: 201
+        body: { amount: 42 }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [amount]
+              properties: { amount: { type: number, minimum: 0, exclusiveMinimum: true } }
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Order' }
+components:
+  schemas:
+    Order:
+      type: object
+      required: [id, amount, status]
+      properties:
+        id: { type: string }
+        amount: { type: number }
+        status: { type: string, enum: [CREATED] }

@@ -1,0 +1,25 @@
+{
+  "name": "api-quality-control-center",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node api/server.cjs",
+    "run:qa": "node runner/cli.cjs",
+    "test": "jest --runInBand --coverage=false",
+    "build:ui": "npm --prefix frontend run build"
+  },
+  "dependencies": {
+    "@apidevtools/swagger-parser": "10.1.1",
+    "acorn": "8.15.0",
+    "acorn-walk": "8.3.4",
+    "ajv": "^8.20.0",
+    "cors": "2.8.5",
+    "express": "^4.22.3",
+    "pdfkit": "0.17.2",
+    "supertest": "7.1.1",
+    "yaml": "^2.9.1"
+  },
+  "devDependencies": {
+    "jest": "29.7.0"
+  }
+}

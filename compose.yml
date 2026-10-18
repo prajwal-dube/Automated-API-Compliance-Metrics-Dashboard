@@ -1,0 +1,23 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    environment:
+      DASHBOARD_ORIGIN: http://localhost:5173
+    volumes:
+      - qa-history:/app/data
+      - qa-reports:/app/artifacts
+    ports:
+      - "127.0.0.1:3000:3000"
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    depends_on:
+      - api
+    ports:
+      - "127.0.0.1:5173:5173"
+volumes:
+  qa-history:
+  qa-reports:

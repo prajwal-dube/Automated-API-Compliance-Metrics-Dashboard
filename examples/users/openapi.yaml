@@ -1,0 +1,61 @@
+openapi: 3.0.3
+info:
+  title: Demo Users API
+  version: 1.0.0
+paths:
+  /health:
+    get:
+      x-test-case: { path: /health, expectedStatus: 200 }
+      responses:
+        '200':
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [status]
+                properties: { status: { type: string, enum: [ok] } }
+  /users/{id}:
+    get:
+      x-test-case: { path: /users/usr-1, expectedStatus: 200 }
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: Found user
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/User' }
+        '404':
+          description: Not found
+  /users:
+    post:
+      x-test-case:
+        path: /users
+        expectedStatus: 201
+        body: { email: contract@example.test }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email]
+              properties: { email: { type: string, format: email } }
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/User' }
+components:
+  schemas:
+    User:
+      type: object
+      required: [id, email]
+      properties:
+        id: { type: string }
+        email: { type: string, format: email }

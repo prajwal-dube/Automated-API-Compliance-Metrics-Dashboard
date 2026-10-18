@@ -1,0 +1,14 @@
+FROM node:20-alpine
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm ci
+COPY api ./api
+COPY runner ./runner
+COPY examples ./examples
+COPY assets ./assets
+COPY services.json ./
+COPY data/.gitkeep ./data/.gitkeep
+COPY artifacts/.gitkeep ./artifacts/.gitkeep
+ENV NODE_ENV=development
+EXPOSE 3000
+CMD ["npm","start"]
